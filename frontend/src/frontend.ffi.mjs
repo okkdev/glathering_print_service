@@ -4,7 +4,6 @@ import { Jimp } from "jimp"
 import { intToRGBA } from "@jimp/utils"
 
 export function createObjectUrl(file) {
-  console.log(file)
   return URL.createObjectURL(file)
 }
 
@@ -17,7 +16,7 @@ export async function preparePGM(url, width) {
     image.resize({ w: width, h: Jimp.AUTO })
 
     const x = image.width - overlay.width
-    const y = image.height - overlay.height / 1.5
+    const y = image.height - overlay.height
     image.composite(overlay, x, y)
 
     image.greyscale()

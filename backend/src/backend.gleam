@@ -1,3 +1,4 @@
+import cors_builder
 import escpos
 import escpos/image
 import escpos/printer
@@ -37,7 +38,6 @@ pub fn handle_request(
   use <- wisp.require_method(req, http.Post)
   case wisp.read_body_bits(req) {
     Ok(data) -> {
-      echo data
       case image.from_pgm(data) {
         Ok(image) -> {
           let dithered_image = image.dither_ign(image)
@@ -46,7 +46,7 @@ pub fn handle_request(
             |> escpos.reset()
             |> escpos.image(glimage)
             |> escpos.image(dithered_image)
-            |> escpos.line_feed(3)
+            |> escpos.line_feed(4)
             |> escpos.cut()
             |> printer.print(printer)
           wisp.response(200)
@@ -58,6 +58,13 @@ pub fn handle_request(
   }
 }
 
+fn cors() {
+  cors_builder.new()
+  |> cors_builder.allow_origin("*")
+  |> cors_builder.allow_method(http.Get)
+  |> cors_builder.allow_method(http.Post)
+}
+
 fn middleware(
   req: wisp.Request,
   handle_request: fn(wisp.Request) -> wisp.Response,
@@ -66,7 +73,8 @@ fn middleware(
   use <- wisp.log_request(req)
   use <- wisp.rescue_crashes
   use req <- wisp.handle_head(req)
-  use req <- wisp.csrf_known_header_protection(req)
+  use req <- cors_builder.wisp_middleware(req, cors())
+  // use req <- wisp.csrf_known_header_protection(req)
 
   handle_request(req)
 }

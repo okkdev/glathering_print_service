@@ -90,7 +90,7 @@ fn view(model: Model) -> Element(Msg) {
     ],
     [
       html.h1([a.class("text-3xl font-black text-center text-pink-300")], [
-        html.text("Glathering Photo Service"),
+        html.text("Glathering Print Service"),
       ]),
       html.div(
         [
@@ -149,7 +149,7 @@ fn view(model: Model) -> Element(Msg) {
               html.p(
                 [
                   a.class(
-                    "text-green-600 bg-red-50 rounded border-2 border-green-600 p-2",
+                    "text-green-600 bg-green-50 rounded border-2 border-green-600 p-2",
                   ),
                 ],
                 [
@@ -166,7 +166,7 @@ fn view(model: Model) -> Element(Msg) {
 
 fn convert_and_print_image(url) -> Effect(Msg) {
   use dispatch <- effect.from
-  promise.await(prepare_pgm(url, 640), fn(pgm_result) {
+  promise.await(prepare_pgm(url, 580), fn(pgm_result) {
     case pgm_result {
       Ok(pgm) -> {
         let assert Ok(req) = request.to("http://localhost:8000")
