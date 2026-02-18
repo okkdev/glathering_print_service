@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"@jimp/utils": "^1.6.0",
+		"jimp": "^1.6.0"
+	}
+}
