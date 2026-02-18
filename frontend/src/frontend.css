@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Lexend", sans-serif;
+}
+
+* {
+  min-width: 0;
+}

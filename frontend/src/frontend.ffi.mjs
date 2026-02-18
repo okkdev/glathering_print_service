@@ -3,20 +3,23 @@ import { Result$Ok, Result$Error } from "./gleam.mjs"
 import { Jimp } from "jimp"
 import { intToRGBA } from "@jimp/utils"
 
-export function getImageUrl(event) {
-  const files = event.target?.files
-  if (files && files.length > 0) {
-    const url = URL.createObjectURL(files[0])
-    return Result$Ok(url)
-  } else {
-    return Result$Error("No file selected")
-  }
+export function createObjectUrl(file) {
+  console.log(file)
+  return URL.createObjectURL(file)
 }
 
-export async function resizeAndConvertToPGM(url, width) {
+export async function preparePGM(url, width) {
   try {
-    const image = await Jimp.read(url)
+    const [image, overlay] = await Promise.all([
+      Jimp.read(url),
+      Jimp.read("/gglogo.png"),
+    ])
     image.resize({ w: width, h: Jimp.AUTO })
+
+    const x = image.width - overlay.width
+    const y = image.height - overlay.height / 1.5
+    image.composite(overlay, x, y)
+
     image.greyscale()
 
     const w = image.width
