@@ -44,8 +44,8 @@ pub fn handle_request(
           let _ =
             escpos.new()
             |> escpos.reset()
-            |> escpos.image(glimage)
             |> escpos.image(dithered_image)
+            |> escpos.image(glimage)
             |> escpos.line_feed(4)
             |> escpos.cut()
             |> printer.print(printer)

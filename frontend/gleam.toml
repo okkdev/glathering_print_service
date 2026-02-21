@@ -29,3 +29,4 @@ lustre_dev_tools = ">= 2.3.4 and < 3.0.0"
 stylesheets = [
   { href = "https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" },
 ]
+title = "Glathering Print Service"

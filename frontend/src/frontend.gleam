@@ -128,7 +128,12 @@ fn view(model: Model) -> Element(Msg) {
                   ),
                   a.class(btn),
                 ],
-                [html.text("Print")],
+                [
+                  case model.state {
+                    Printing -> html.text("Printing...")
+                    _ -> html.text("Print")
+                  },
+                ],
               ),
             ],
           ),
@@ -160,6 +165,17 @@ fn view(model: Model) -> Element(Msg) {
           },
         ],
       ),
+      html.div([a.class("text-sm text-center text-white")], [
+        html.text("Made by "),
+        html.a(
+          [
+            a.href("https://bsky.app/profile/okk.moe"),
+            a.class("hover:text-pink-300"),
+          ],
+          [html.text("Jen")],
+        ),
+        html.text(" 💕"),
+      ]),
     ],
   )
 }
@@ -169,7 +185,7 @@ fn convert_and_print_image(url) -> Effect(Msg) {
   promise.await(prepare_pgm(url, 580), fn(pgm_result) {
     case pgm_result {
       Ok(pgm) -> {
-        let assert Ok(req) = request.to("http://localhost:8000")
+        let assert Ok(req) = request.to("https://print.goo.garden/back")
         let req =
           req
           |> request.set_method(http.Post)
