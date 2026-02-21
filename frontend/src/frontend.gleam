@@ -185,7 +185,7 @@ fn convert_and_print_image(url) -> Effect(Msg) {
   promise.await(prepare_pgm(url, 580), fn(pgm_result) {
     case pgm_result {
       Ok(pgm) -> {
-        let assert Ok(req) = request.to("https://print.goo.garden/back")
+        let assert Ok(req) = request.to("https://print.goo.garden/api")
         let req =
           req
           |> request.set_method(http.Post)
